@@ -1,18 +1,11 @@
 
 import streamlit as st
-from streamlit_lottie import st_lottie
 from streamlit_option_menu import option_menu
-from PIL import Image
-from io import BytesIO
-import time
-import requests
 from YTProject import *
 from YouTubeSQL import*
 from ExecSql import*
 
-st.set_page_config(page_title= "YoutubeDataHarvesting",
-                   layout= "wide",)
-
+st.set_page_config(page_title= "YoutubeDataHarvesting",layout= "wide")
 selected_menu = option_menu(None,["Select Channels","MySQL","Queries"],
                 icons=["house","cloud-upload",'gear'],
                 orientation='horizontal')
@@ -65,10 +58,9 @@ if selected_menu=='Select Channels':
                             check_existing_document = collection.find_one({"channel_info.channel_id": channel_id})
                             if check_existing_document is None:
                                 collection.insert_one(channel)
-                                st.success('Successfully uploaded ',icon='✔️')
-                                st.info('Please select an option Database to view and migrate the channel data',icon='ℹ️')
+                                st.success('Successfully uploaded ')
                             else:
-                                st.error("  OOPS  channel_ID already uploaded Try with different channel_ID",icon='❕')
+                                st.error("channel_ID already ")
                         except Exception as e:
                             print(f"Error occurred while uploading channel information: {str(e)}")
 
@@ -94,7 +86,7 @@ if selected_menu == 'MySQL':
                     playlist_df.to_sql('playlist_data', con=engine, if_exists='append', index=False)
                     video_df.to_sql('video_data', con=engine, if_exists='append', index=False)
                     comment_df.to_sql('comment_data', con=engine, if_exists='append', index=False)
-                    st.success(f"{channel_name_to_find} channel migrated successfully", icon='✅')
+                    st.success(f"{channel_name_to_find} channel migrated successfully")
 
 
 
