@@ -24,8 +24,7 @@ def get_channel_data(youtube, channel_id):
     ).execute()
 
     channel = channel_info_request['items'][0]
-    # channel_image = dict(image=channel['snippet']['thumbnails']['medium']['url'])
-
+    
     channel_type = channel_info_request['items'][0]['topicDetails']['topicCategories']
     filtered_type = [i for i in channel_type if 'Lifestyle' not in i]
     type_of_channel = filtered_type[0].split('/')[-1] if filtered_type else channel_type[0].split('/')[-1]
@@ -33,12 +32,12 @@ def get_channel_data(youtube, channel_id):
     channel_data = {
         'channel_id': channel_id,
         'channel_name': channel['snippet']['title'],
+        'Channel_Type': type_of_channel,
         'subscribers_count': channel['statistics']['subscriberCount'],
         'video_count': channel['statistics']['videoCount'],
-        'view_count': channel['statistics']['viewCount'],
         'channel_description': channel['snippet']['description'],
         'Channel_Status': channel['status']['privacyStatus'],
-        'Channel_Type': type_of_channel,
+       
         'playlist_id': channel['contentDetails']['relatedPlaylists']['uploads'],
     }
     return channel_data
@@ -131,41 +130,3 @@ def get_comment_data(youtube, video_id):
                 print(f"An error occurred while retrieving comments for video: {ids}")
                 print(f"Error details: {e}")
     return comments_data
-
-
-# def channel_video_comment():
-#                             channel_data = get_channel_data(youtube, channel_id)
-#                             playlist_id = channel_data['playlist_id']
-#                             video_id = get_video_ids(youtube, playlist_id)
-#                             video_data = get_video_data(youtube, video_id)
-#                             comment_data = get_comment_data(youtube, video_id)
-#                             channel = {
-#                                 'channel_info': channel_data,
-#                                 'video_info': {}
-#                             }
-#                             for count, vid_data in enumerate(video_data, 1):
-#                                 v_id = f"Video_Id_{count}"
-#                                 cmt = {}
-#                                 for i in comment_data:
-#                                     if i["Video_id"] == vid_data["video_id"]:
-#                                         c_id = f"Comment_Id_{len(cmt) + 1}"
-#                                         cmt[c_id] = {
-#                                             "Comment_Id": i.get("Comment_Id", 'comments_disabled'),
-#                                             "Comment_Text": i.get("Comment_Text", 'comments_disabled'),
-#                                             "Comment_Author": i.get("Comment_Author", 'comments_disabled'),
-#                                             "Comment_Published_At": i.get("Comment_Published_At", 'comments_disabled')
-#                                         }
-#                                 vid_data["Comments"] = cmt
-#                                 channel['video_info'][v_id] = vid_data
-#                             return channel
-# channel=channel_video_comment()
-# try:
-#                             check_existing_document = collection.find_one({"channel_info.channel_id": channel_id})
-#                             if check_existing_document is None:
-#                                 collection.insert_one(channel)
-                                
-                    
-# except Exception as e:
-#                             print(f"Error occurred while uploading channel information: {str(e)}")
-
-
