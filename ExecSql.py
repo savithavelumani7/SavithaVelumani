@@ -8,7 +8,6 @@ Created on Sun Nov  5 21:19:54 2023
 import pandas as pd
 from YouTubeSQL import*
 
-#========================RAISE SQL QUERY TO SOLVE QUESTION =============================================================
 def qust_1():
     mycursor.execute("SELECT channel_data.channel_name, video_data.video_name FROM channel_data JOIN video_data ON channel_data.channel_name = video_data.channel_name;")
     data = mycursor.fetchall()
