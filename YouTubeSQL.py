@@ -16,8 +16,6 @@ mydb=mysql.connector.connect(
 mycursor=mydb.cursor()
 
 engine = create_engine('mysql+mysqlconnector://root:Savitha20@localhost/youtube_data')
-
-#===========================FETCHING CHANNEL,VIDEO,COMMENT FROM MONGODB DATABASE========================================
 def channel_video_comment():
     channel_data= get_channel_data(youtube, channel_id)
     playlist_id = channel_data['playlist_id']
@@ -55,25 +53,6 @@ def channel_list():
     return channel_list
 channel_list()
 
-#=======================================CONVERT TO DATATIME=============================================================
-# def duration_convert_to_time(duration):
-#     hours = 0
-#     minutes = 0
-#     seconds = 0
-#     # Extract hours, minutes, and seconds using regular expressions
-#     pattern = r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?"
-#     match = re.match(pattern, duration)
-#     if match:
-#         hours = int(match.group(1) or 0)
-#         minutes = int(match.group(2) or 0)
-#         seconds = int(match.group(3) or 0)
-#     else:
-#         print('Not found')
-#     total_seconds = (hours * 3600) + (minutes * 60) + seconds
-#     return total_seconds
-
-
-#=============================EXTRACT CHANNEL,PLAYLIST,VIDEO,COMMENT TO CONVERT AS DATAFRAME============================
 def extract_channel(channel_name_to_find):
     channel_details = []
     finding=collection.find({"channel_info.channel_name": channel_name_to_find})
@@ -176,10 +155,6 @@ def extract_comment(channel_name_to_find):
     return comment_list
 
 
-
-
-
-#==========================CREATING CHANNEL,PLAYLIST,VIDEO,COMMENT DATAFRAME============================================
 def create_channel_df_table(channel_name_to_find):
     channel_details = extract_channel(channel_name_to_find)
     channel_df = pd.DataFrame(channel_details)
@@ -235,7 +210,6 @@ def create_comment_df_table(channel_name_to_find):
     comment_df['comment_published_at'] = pd.to_datetime(comment_df['comment_published_at'])
     return comment_df
 
-#============================================MIGRATING NOSQL TO SQL=====================================================
 def NOSQL_TO_SQL(channel_name_to_find):
     channel_df = create_channel_df_table(channel_name_to_find)
     playlist_df = create_playlist_df_table(channel_name_to_find)
